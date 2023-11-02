@@ -7,6 +7,12 @@ from typing import List
 import logging
 
 
+def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:  # nopep8
+    '''returns the log message obfuscated'''
+    re_pattern = f'({"|".join(fields)})=[^\\{separator}]*'
+    return re.sub(re_pattern, f'\\1={redaction}', message)
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class """
 
@@ -22,9 +28,3 @@ class RedactingFormatter(logging.Formatter):
         '''redact message of LogRecord instances'''
         message = super(RedactingFormatter, self).format(record)
         return filter_datum(self.fields, self.REDACTION, message, self.SEPARATOR)  # nopep8
-
-
-def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:  # nopep8
-    '''returns the log message obfuscated'''
-    re_pattern = f'({"|".join(fields)})=[^\\{separator}]*'
-    return re.sub(re_pattern, f'\\1={redaction}', message)
