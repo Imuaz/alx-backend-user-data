@@ -32,7 +32,8 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields, self.REDACTION, message, self.SEPARATOR)  # nopep8
 
 
-PII_FIELDS = ['name', 'email', 'phone', 'ssn', 'ip']
+PII_FIELDS = ['name', 'email', 'phone', 'ssn', 'password']
+
 
 def get_logger() -> logging.Logger:
     '''returns a logging.Logger object'''
