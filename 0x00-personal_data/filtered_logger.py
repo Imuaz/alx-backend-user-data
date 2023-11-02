@@ -50,15 +50,22 @@ def get_logger() -> logging.Logger:
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     '''connects to the secure database'''
-    user = os.eviron.get('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
-    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
-    database_name = os.getenv('PERSONAL_DATA_DB_NAME',)
-    db_connector = mysql.connector.connect(
-        host=host,
-        database=database_name,
-        user=user,
-        password=password
-    )
+    db_username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    db_password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    db_host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    db_name = os.environ.get('PERSONAL_DATA_DB_NAME')
 
-    return db_connector
+    if not db_name:
+        raise ValueError("Database name (PERSONAL_DATA_DB_NAME) environment variable is not set.")
+
+    try:
+        connection = mysql.connector.connect(
+            user=db_username,
+            password=db_password,
+            host=db_host,
+            database=db_name
+        )
+        return connection
+    except mysql.connector.Error as err:
+        print(f"Error connecting to the database: {err}")
+        return None
