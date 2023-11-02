@@ -6,8 +6,8 @@ import os
 import re
 from logging import StreamHandler
 from typing import List
-import mysql.connector
 import logging
+import mysql.connector
 
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:  # nopep8
@@ -51,14 +51,14 @@ def get_logger() -> logging.Logger:
 def get_db() -> mysql.connector.connection.MySQLConnection:
     '''connects to the secure database'''
     user = os.eviron.get('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    psswd = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
     host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
     db_name = os.getenv('PERSONAL_DATA_DB_NAME',)
     db_conn = mysql.connector.connect(
         host=host,
         database=db_name,
         user=user,
-        password=password
+        password=psswd
     )
 
     return db_conn
