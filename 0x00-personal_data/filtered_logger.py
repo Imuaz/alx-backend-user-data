@@ -54,18 +54,11 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     db_password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
     db_host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
     db_name = os.environ.get('PERSONAL_DATA_DB_NAME')
+    connection = mysql.connector.connect(
+        user=db_username,
+        password=db_password,
+        host=db_host,
+        database=db_name
+    )
 
-    if not db_name:
-        raise ValueError("Database name (PERSONAL_DATA_DB_NAME) environment variable is not set.")
-
-    try:
-        connection = mysql.connector.connect(
-            user=db_username,
-            password=db_password,
-            host=db_host,
-            database=db_name
-        )
-        return connection
-    except mysql.connector.Error as err:
-        print(f"Error connecting to the database: {err}")
-        return None
+    return connection
