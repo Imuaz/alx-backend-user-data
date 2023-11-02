@@ -70,20 +70,22 @@ def main() -> None:
     '''Cobtain a database connection'''
     db = get_db()
     logger = get_logger()
-    
+
     try:
         with db.cursor() as cursor:
             cursor.execute("SELECT * FROM users;")
             fields = cursor.column_names
             rows = cursor.fetchall()
-            
+
             for row in rows:
-                values = "; ".join(f"{field}={value}" for field, value in zip(fields, row))
+                values = "; ".join(f"{field}={value}" for field,
+                                   value in zip(fields, row))
                 logger.info(values)
     except mysql.connector.Error as err:
         print(f"Error accessing the database: {err}")
     finally:
         db.close()
+
 
 if __name__ == "__main__":
     main()
