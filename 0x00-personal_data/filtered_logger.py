@@ -48,3 +48,17 @@ def get_logger() -> logging.Logger:
     return logger
 
 
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    '''connects to the secure database'''
+    user = os.eviron.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    database_name = os.getenv('PERSONAL_DATA_DB_NAME',)
+    db_connector = mysql.connector.connect(
+        host=host,
+        database=database_name,
+        user=user,
+        password=password
+    )
+
+    return db_connector
