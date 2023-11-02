@@ -33,6 +33,8 @@ class RedactingFormatter(logging.Formatter):
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
+
+
 def get_logger() -> logging.Logger:
     '''returns a logging.Logger object'''
     logger = logging.getLogger('user_data')
