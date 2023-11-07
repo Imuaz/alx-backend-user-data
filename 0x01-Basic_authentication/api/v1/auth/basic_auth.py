@@ -26,13 +26,13 @@ class BasicAuth(Auth):
         return base64_part
 
 
-def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:  # nopep8
-    """
-    Decode a Base64 Authorization header and return as a UTF-8 string.
-    """
-    if not base64_authorization_header or not isinstance(base64_authorization_header, str):  # nopep8
-        return None
-    try:
-        return b64decode(base64_authorization_header).decode('utf-8')
-    except Exception:
-        return None
+    def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:  # nopep8
+        """
+        Decode a Base64 Authorization header and return as a UTF-8 string.
+        """
+        if not base64_authorization_header or not isinstance(base64_authorization_header, str):  # nopep8
+            return None
+        try:
+            return b64decode(base64_authorization_header).decode('utf-8')
+        except Exception:
+            return None
