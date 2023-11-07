@@ -3,7 +3,7 @@
 Basic auth module
 """
 from api.v1.auth.auth import Auth
-import base64
+from base64 import b64decode, binascii
 
 
 class BasicAuth(Auth):
@@ -30,13 +30,10 @@ def decode_base64_authorization_header(self, base64_authorization_header: str) -
     """
     Decode a Base64 Authorization header and return as a UTF-8 string.
     """
-    if base64_authorization_header is None or not isinstance(base64_authorization_header, str):  # nopep8
+    if not base64_authorization_header or not isinstance(base64_authorization_header, str):  # nopep8
         return None
+
     try:
-        # Attempt to decode the Base64 string
-        decoded_bytes = base64.b64decode(base64_authorization_header)
-        decoded_string = decoded_bytes.decode('utf-8')
-        return decoded_string
-    except Exception:
-        # Invalid Base64 or decoding error
+        return b64decode(base64_authorization_header).decode('utf-8')
+    except (binascii.Error, UnicodeDecodeError):
         return None
