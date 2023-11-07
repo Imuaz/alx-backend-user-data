@@ -34,6 +34,7 @@ def unauthorized_page() -> str:
     """
     abort(401, description="Unauthorized")
 
+
 @app_views.route('/forbidden', strict_slashes=False)
 def forbidden_page() -> str:
     """GET /api/v1/forbidden
