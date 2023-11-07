@@ -12,15 +12,15 @@ class Auth:
     def __init__(self, excluded_paths: List[str] = []):
         self.excluded_paths = excluded_paths
 
-    def require_auth(self, path: str) -> bool:
+    def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Check if authentication is required for the given path."""
-        if not self.excluded_paths:
+        if not excluded_paths:
             return True
 
-        if path in self.excluded_paths or path.rstrip('/') in self.excluded_paths:  # nopep8
+        if path in excluded_paths or path.rstrip('/') in excluded_paths:
             return False
 
-        for excluded_path in self.excluded_paths:
+        for excluded_path in excluded_paths:
             if excluded_path.endswith('*') and path.startswith(excluded_path[:-1]):  # nopep8
                 return False
 
