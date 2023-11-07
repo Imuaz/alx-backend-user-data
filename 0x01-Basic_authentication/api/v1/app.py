@@ -26,16 +26,18 @@ if getenv('AUTH_TYPE') == 'basic_auth':
 def run_before_request():
     """Runs firstly before request"""
     if auth:
-        excaped_paths = [
+        exempt_paths = [
             '/api/v1/status/',
             '/api/v1/unauthorized',
             '/api/v1/forbidden']
-        auth_requred = auth.require_auth(request.path, excaped_paths)
-        if auth_requred:
-            if auth.authorization_header(request):
-                abort(401)
-            if auth.current_user(request):
-                abort(403)
+
+        requires_auth = auth.require_auth(request.path, exempt_paths)
+
+        if requires_auth:
+            if not auth.authorization_header(request):
+                abort(401)  # Unauthorized
+            if not auth.current_user(request):
+                abort(403)  # Forbidden
 
 
 @app.errorhandler(404)
