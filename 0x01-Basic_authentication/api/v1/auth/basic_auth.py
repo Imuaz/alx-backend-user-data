@@ -30,13 +30,9 @@ def decode_base64_authorization_header(self, base64_authorization_header: str) -
     """
     Decode a Base64 Authorization header and return as a UTF-8 string.
     """
-    if base64_authorization_header is None:
-        return None
-    if not isinstance(base64_authorization_header, str):
+    if not base64_authorization_header or not isinstance(base64_authorization_header, str):  # nopep8
         return None
     try:
-        decoded_bytes = base64_authorization_header.encode('utf-8')
-        decoded_string = base64.b64decode(decoded_bytes)
-        return decoded_string.decode('utf-8')
+        return b64decode(base64_authorization_header).decode('utf-8')
     except Exception:
         return None
