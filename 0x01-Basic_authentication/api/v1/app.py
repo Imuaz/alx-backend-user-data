@@ -26,10 +26,6 @@ def unauthorized(error):
     response.status_code = 401
     return response
 
-@app_views.route('/api/v1/unauthorized', methods=['GET'])
-def test_unauthorized():
-    """test Unauthorized"""
-    abort(401)
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")

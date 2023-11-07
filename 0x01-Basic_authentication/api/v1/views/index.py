@@ -19,8 +19,14 @@ def stats() -> str:
     """ GET /api/v1/stats
     Return:
       - the number of each objects
-    """
+      """
     from models.user import User
     stats = {}
     stats['users'] = User.count()
     return jsonify(stats)
+
+
+@app_views.route('/api/v1/unauthorized', methods=['GET'])
+def test_unauthorized():
+    """Test Unauthorized"""
+    abort(401)
