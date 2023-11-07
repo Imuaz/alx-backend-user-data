@@ -14,15 +14,20 @@ class Auth:
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """Check if authentication is required for the given path."""
-        if not excluded_paths:
+        if path is None:
+            return True
+        if excluded_paths is None or not excluded_paths:
             return True
 
-        if path in excluded_paths or path.rstrip('/') in excluded_paths:
-            return False
+        # Make paths slash-tolerant by checking without trailing slashes
+        path_without_trailing_slash = path.rstrip('/')
 
         for excluded_path in excluded_paths:
-            if excluded_path.endswith('*') and path.startswith(excluded_path[:-1]):  # nopep8
-                return False
+            if excluded_path.endswith('/'):
+                # Remove trailing slash from excluded paths for comparison
+                excluded_path = excluded_path.rstrip('/')
+                if path_without_trailing_slash == excluded_path:
+                    return False
 
         return True
 
