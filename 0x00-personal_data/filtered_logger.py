@@ -6,8 +6,8 @@ import os
 import re
 from logging import StreamHandler
 from typing import List
-import mysql.connector
 import logging
+import mysql.connector
 
 
 def filter_datum(fields: List[str], redaction: str, message: str, separator: str) -> str:  # nopep8
@@ -49,16 +49,43 @@ def get_logger() -> logging.Logger:
 
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    '''connects to the secure database'''
-    user = os.eviron.get('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
-    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
-    db_name = os.getenv('PERSONAL_DATA_DB_NAME',)
-    db_conn = mysql.connector.connect(
-        host=host,
-        database=db_name,
-        user=user,
-        password=password
+    '''
+    Connects to the secure database
+    '''
+    db_username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    db_password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    db_host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    db_name = os.environ.get('PERSONAL_DATA_DB_NAME')
+    connection = mysql.connector.connect(
+        user=db_username,
+        password=db_password,
+        host=db_host,
+        database=db_name
     )
 
-    return db_conn
+    return connection
+
+
+def main() -> None:
+    '''Cobtain a database connection'''
+    db = get_db()
+    logger = get_logger()
+
+    try:
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM users;")
+            fields = cursor.column_names
+            rows = cursor.fetchall()
+
+            for row in rows:
+                values = "; ".join(f"{field}={value}" for field,
+                                   value in zip(fields, row))
+                logger.info(values)
+    except mysql.connector.Error as err:
+        print(f"Error accessing the database: {err}")
+    finally:
+        db.close()
+
+
+if __name__ == "__main__":
+    main()
