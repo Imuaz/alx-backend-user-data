@@ -53,8 +53,7 @@ class BasicAuth(Auth):
 
     def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):  # nopep8
         """Retrieve the User instance based on email and password."""
-        def user_object_from_credentials(self, user_email: str,
-                                     user_pwd: str) -> TypeVar('User'):
+    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):  # nopep8
         """
         Return a User instance based on email and password
         """
@@ -69,7 +68,7 @@ class BasicAuth(Auth):
             for u in users:
                 if u.is_valid_password(user_pwd):
                     return u
-            return None
+                return None
         except Exception:
             return None
 
@@ -86,4 +85,4 @@ class BasicAuth(Auth):
                     email, pword = self.extract_user_credentials(decoded)
                     if email is not None:
                         return self.user_object_from_credentials(email, pword)
-        return
+        sreturn
