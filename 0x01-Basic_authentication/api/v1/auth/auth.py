@@ -23,7 +23,12 @@ class Auth:
         path_without_trailing_slash = path.rstrip('/')
 
         for excluded_path in excluded_paths:
-            if excluded_path.endswith('/'):
+            if excluded_path.endswith('*'):
+                # Remove '*' at the end and check if the path starts with *
+                pattern = excluded_path.rstrip('*')
+                if path_without_trailing_slash.startswith(pattern):
+                    return False
+            else:
                 # Remove trailing slash from excluded paths for comparison
                 excluded_path = excluded_path.rstrip('/')
                 if path_without_trailing_slash == excluded_path:
