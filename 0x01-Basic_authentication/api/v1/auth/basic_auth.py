@@ -45,18 +45,13 @@ class BasicAuth(Auth):
 
     def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str):  # nopep8
         """Extract user email and password from a decoded Base64 header."""
-       if decoded_base64_authorization_header is None or not isinstance(decoded_base64_authorization_header, str):  # nopep8
+        if decoded_base64_authorization_header is None or not isinstance(decoded_base64_authorization_header, str):  # nopep8
             return None, None
-
-        # Split the decoded header at the last occurrence of ':' to allow ':' in the password
-        last_colon_index = decoded_base64_authorization_header.rfind(':')
-        if last_colon_index == -1:
+        if ':' not in decoded_base64_authorization_header:
             return None, None
-
-        user_email = decoded_base64_authorization_header[:last_colon_index]
-        user_password = decoded_base64_authorization_header[last_colon_index + 1:]
-
+        user_email, user_password = decoded_base64_authorization_header.split(':', 1)  # nopep8
         return user_email, user_password
+
     def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):  # nopep8
         """Retrieve the User instance based on email and password."""
         if user_email is None or not isinstance(user_email, str):
