@@ -69,3 +69,22 @@ class BasicAuth(Auth):
                     return user
         except Exception:
             return None  # Password does not match
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Retrieve the User instance for a request using Basic Auth."""
+        if request is None:
+            return None
+
+        authorization_header = request.headers.get('Authorization')
+        base64_header = self.extract_base64_authorization_header(authorization_header)  # nopep8
+
+        if base64_header is None:
+            return None
+
+        decoded_header = self.decode_base64_authorization_header(base64_header)
+        user_email, user_pwd = self.extract_user_credentials(decoded_header)
+
+        if user_email is None or user_pwd is None:
+            return None
+
+        return self.user_object_from_credentials(user_email, user_pwd)
