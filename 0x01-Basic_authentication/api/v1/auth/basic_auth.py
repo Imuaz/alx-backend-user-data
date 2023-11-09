@@ -4,7 +4,7 @@ Basic auth module
 """
 from api.v1.auth.auth import Auth
 import base64
-from models.user import User
+from models.user import *
 from typing import TypeVar
 
 
