@@ -34,12 +34,12 @@ def run_before_request():
         requires_auth = auth.require_auth(request.path, exempt_paths)
 
         if requires_auth:
-            if not auth.authorization_header(request):
-                abort(401)  # Unauthorized
-            if not auth.current_user(request):
-                abort(403)  # Forbidden
-
-
+            cookie = auth.session_cookie(request)
+            if auth.authorization_header(request) is None and cookie is None:
+                abort(401)
+            if auth.current_user(request) is None:
+                abort(403)
+                
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
