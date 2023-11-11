@@ -2,7 +2,6 @@
 """
 SessionAuth Module
 """
-import os
 from models.user import User
 from .auth import Auth
 import uuid
