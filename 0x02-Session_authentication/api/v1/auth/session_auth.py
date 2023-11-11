@@ -35,10 +35,10 @@ class SessionAuth(Auth):
 
         session_id = self.session_cookie(request)
 
-        if session_id:
+        try:
             # Get the User ID based on the session ID
             user_id = self.user_id_for_session_id(session_id)
             if user_id:
                 return User.get(user_id)
-
-        return None
+        except Exception:
+            return None
