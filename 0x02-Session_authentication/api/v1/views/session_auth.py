@@ -58,4 +58,4 @@ def session_logout() -> str:
         abort(404)
 
     # Return an empty JSON dictionary with status code 200
-    return make_response(jsonify({}), 200)
+    return jsonify({}), 200
