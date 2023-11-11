@@ -35,11 +35,5 @@ class SessionAuth(Auth):
 
         # Gets session ID from the session cookie
         session_id = self.session_cookie(request)
-
-        if session_id:
-            user_id = self.user_id_for_session_id(session_id)
-            if user_id:
-                # Retrieve a User instance from db based on user ID
-                return User.get(user_id)
-
-        return None
+        user = self.user_id_for_session_id(session_id)
+        return user
