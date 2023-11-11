@@ -2,6 +2,7 @@
 """
 SessionAuth Module
 """
+import os
 from models.user import User
 from .auth import Auth
 import uuid
@@ -44,3 +45,26 @@ class SessionAuth(Auth):
                 return User.get(user_id)
         except Exception:
             return None
+
+    def destroy_session(self, request=None):
+        """Deletes the user session / logout."""
+        if request is None:
+            return False
+
+        # Get the Session ID from the request cookie
+        session_id = self.session_cookie(request)
+        # If Session ID is not present, return False
+        if not session_id:
+            return False
+
+        # Get the User ID associated with the Session ID
+        user_id = self.user_id_for_session_id(session_id)
+
+        # If no User ID is linked, return False
+        if not user_id:
+            return False
+
+        # Delete the Session ID from user_id_by_session_id
+        del self.user_id_by_session_id[session_id]
+
+        return True
