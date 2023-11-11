@@ -9,7 +9,7 @@ import os
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
-def session_login():
+def session_login() -> str:
     """ Returns dictionary representation of user if found"""
     email = request.form.get('email')
     password = request.form.get('password')
@@ -48,8 +48,8 @@ def session_login():
     return response
 
 
-@app_views.route('/api/auth_session/logout', methods=['DELETE'], strict_slashes=False)
-def session_logout():
+@app_views.route('/api/auth_session/logout', methods=['DELETE'], strict_slashes=False)  # nopep8
+def session_logout() -> str:
     """Logout route."""
     from api.v1.app import auth
 

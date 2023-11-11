@@ -51,7 +51,6 @@ class SessionAuth(Auth):
         if request is None:
             return False
 
-        # Get the Session ID from the request cookie
         session_id = self.session_cookie(request)
         # If Session ID is not present, return False
         if not session_id:
