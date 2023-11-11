@@ -50,9 +50,9 @@ class SessionAuth(Auth):
         if request is None:
             return False
 
-        session_id = self.session_cookie(request)
+        session_cookie = self.session_cookie(request)
         # If Session ID is not present, return False
-        if not session_id:
+        if not session_cookie:
             return False
 
         # Get the User ID associated with the Session ID
@@ -63,6 +63,5 @@ class SessionAuth(Auth):
             return False
 
         # Delete the Session ID from user_id_by_session_id
-        del self.user_id_by_session_id[session_id]
-
+        del self.user_id_by_session_id[session_cookie]
         return True

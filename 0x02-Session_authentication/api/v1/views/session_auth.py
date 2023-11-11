@@ -52,10 +52,7 @@ def session_login() -> str:
 def session_logout() -> str:
     """Logout route."""
     from api.v1.app import auth
-
-    # Delete the user session
     if not auth.destroy_session(request):
         abort(404)
 
-    # Return an empty JSON dictionary with status code 200
     return jsonify({}), 200
