@@ -56,7 +56,7 @@ class SessionAuth(Auth):
             return False
 
         # Get the User ID associated with the Session ID
-        user_id = self.user_id_for_session_id(session_id)
+        user_id = self.user_id_for_session_id(session_cookie)
 
         # If no User ID is linked, return False
         if not user_id:
