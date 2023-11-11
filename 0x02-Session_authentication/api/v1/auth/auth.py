@@ -2,6 +2,7 @@
 """
 Auth Module
 """
+import os
 from flask import request
 from typing import List, TypeVar
 
@@ -45,3 +46,14 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('user'):
         """Get the current user (placeholder)."""
         return None
+
+    def session_cookie(self, request=None):
+        """Returns a cookie value from a request"""
+        if request is None:
+            return None
+
+        # get cooke name from env variable 'SESSION_NAME'
+        cookie_name = os.getenv("SESSION_NAME", "my_session_id")
+
+        # retrieve the cookie value from request cooke
+        return request.cookies.get(cookie_name, None)
