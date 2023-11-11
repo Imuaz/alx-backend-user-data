@@ -32,12 +32,14 @@ def run_before_request():
         exempt_paths = [
             '/api/v1/status/',
             '/api/v1/unauthorized',
-            '/api/v1/forbidden']
+            '/api/v1/forbidden',
+            '/api/v1/auth_session/login/'
+        ]
 
         requires_auth = auth.require_auth(request.path, exempt_paths)
 
         if requires_auth:
-            if not auth.authorization_header(request):
+            if not auth.authorization_header(request) and not auth.session_cookie(request):  # nopep8
                 abort(401)  # Unauthorized
             request.current_user = auth.current_user(request)
             if not request.current_user:
