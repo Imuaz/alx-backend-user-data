@@ -39,9 +39,8 @@ class SessionAuth(Auth):
         try:
             # Get the User ID based on the session ID
             user_id = self.user_id_for_session_id(session_id)
-            if user_id:
-                # Retrieve a User instance from the db based on the User ID
-                return User.get(user_id)
+            # Retrieve a User instance from the db based on the User ID
+            return User.get(user_id)
         except Exception:
             return None
 
