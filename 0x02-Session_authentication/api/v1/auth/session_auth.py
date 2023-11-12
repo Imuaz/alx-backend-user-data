@@ -52,7 +52,7 @@ class SessionAuth(Auth):
         if request is None:
             return False
         sess_id = self.session_cookie(request)
-        if not sess_id or not self.user_id_for_session_id(sess_id):
+        if sess_id is None or self.user_id_for_session_id(sess_id) is None:
             return False
         del self.user_id_by_session_id[sess_id]
 
