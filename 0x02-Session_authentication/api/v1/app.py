@@ -46,7 +46,7 @@ def run_before_request():
 
         if requires_auth:
             cookie = auth.session_cookie(request)
-            if not auth.authorization_header(request) and cookie in None:
+            if not auth.authorization_header(request) and cookie is None:
                 abort(401)  # Unauthorized
             if auth.current_user(request) is None:
                 abort(403)  # Forbidden
