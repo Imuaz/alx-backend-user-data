@@ -5,6 +5,7 @@ SessionAuth Module
 from models.user import User
 from .auth import Auth
 import uuid
+from flask import request
 
 
 class SessionAuth(Auth):
