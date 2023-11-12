@@ -50,7 +50,6 @@ def run_before_request():
                 abort(401)  # Unauthorized
             if auth.current_user(request) is None:
                 abort(403)  # Forbidden
-                
 
 
 @app.errorhandler(404)
