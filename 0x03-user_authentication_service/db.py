@@ -40,7 +40,7 @@ class DB:
         self._session.commit()
         return new_user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
         """
         Finds first row found in the users table filtered by its arguments
         """
@@ -52,5 +52,4 @@ class DB:
             raise e
         finally:
             self._session.close()
-
         return user
