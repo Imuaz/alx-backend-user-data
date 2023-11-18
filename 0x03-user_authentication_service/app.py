@@ -37,13 +37,12 @@ def login():
 
     if not log_user:
         abort(401)
-    else:
-        new_session_id = AUTH.create_session(email)
-        if new_session_id:
-            payload = jsonify({"email": f"{email}", "message": "logged in"})
-            payload.set_cookie("session_id", new_session_id)
-            return payload
-        abort(401)
+
+    session_id = AUTH.create_session(email)
+    payload = jsonify({"email": f"{email}", "message": "logged in"})
+    payload.set_cookie("session_id", session_id)
+
+    return payload
 
 
 if __name__ == "__main__":
