@@ -42,14 +42,16 @@ class Auth:
         """Creates user session ID"""
         try:
             user = self._db.find_user_by(email=email)
-            # Generate a new UUID for the session
-            user.session_id = _generate_uuid()
-            # Update the user's session_id in the database
-            self._db.update_user(user.id, session_id=user.session_id)
-
-            return session_id
         except NoResultFound:
             return None
+
+        # Generate a new UUID for the session
+        session_id = _generate_uuid()
+
+        # Update the user's session_id in the database
+        self._db.update_user(user.id, session_id=session_id)
+
+        return session_id
 
 
 def _hash_password(password: str) -> bytes:
