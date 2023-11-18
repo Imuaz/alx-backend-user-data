@@ -2,6 +2,7 @@
 """
 Authentication Module
 """
+import uuid
 import bcrypt
 from user import User
 from db import DB
