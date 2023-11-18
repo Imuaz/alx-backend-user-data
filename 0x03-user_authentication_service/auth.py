@@ -46,7 +46,7 @@ class Auth:
         session_id = _generate_uuid()
 
         # Update the user's session_id in the database
-        self._db.update_user(user.id, session_id=session_id)
+        self._db.update_user(user.id, session_id=user.session_id)
 
         return session_id
 
