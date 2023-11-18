@@ -4,10 +4,10 @@ App module
 """
 from flask import Flask, jsonify
 
-
 app = Flask(__main__)
 
-@app.route("/")
+
+@app.route("/", methods=["GET"], strict_slashes=False)
 def index:
     """Home page"""
     return jsonify({"message": "Bienvenue"})
