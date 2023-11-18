@@ -52,6 +52,20 @@ class Auth:
         self._db.update_user(user.id, session_id=user.session_id)
         return user.session_id
 
+    def get_user_from_session_id(self, session_id) -> str:
+        """Gets user by session ID"""
+        if session_id is None:
+            return None
+
+        try:
+            # Find the user by session_id using the public method find_user_by
+            user = self._db.find_user_by(session_id=session_id)
+        except NoResultFound:
+            # If no user is found, return None
+            return None
+
+        return user
+
 
 def _hash_password(password: str) -> bytes:
     """Returns bytes as asalted hash of the input password, hashed"""
