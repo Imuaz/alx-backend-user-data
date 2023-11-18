@@ -46,9 +46,11 @@ class Auth:
             return None
 
         # Generate a new UUID for the session
-        session_id = _generate_uuid()
+        user.session_id = _generate_uuid()
 
-        return session_id
+        # Update the user's session_id in the database
+        self._db.update_user(user.id, session_id=user.session_id)
+        return user.session_id
 
 
 def _hash_password(password: str) -> bytes:
