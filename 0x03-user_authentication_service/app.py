@@ -44,7 +44,6 @@ def login():
             payload.set_cookie("session_id", new_session_id)
             return payload
         abort(401)
-    
 
 
 if __name__ == "__main__":
