@@ -16,15 +16,14 @@ class Auth:
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """Registers a new user,save to the db, and return User object"""
-        try:  # checks wheather a user with the same email exists
-            self._db.find_user_by(email=email)
-        except NoResultFound:  # User doesn't exists
-            hashed_passwd = _hash_password(password)
-            new_user = self._db.add_user(email, hashed_passwd)
+        """Registers a new user, saves to the db, and returns User object."""
+        try:
+            existing_user = self._db.find_user_by(email=email)
+            raise ValueError(f"User {email} already exists")
+        except NoResultFound:
+            hashed_password = _hash_password(password)
+            new_user = self._db.add_user(email, hashed_password)
             return new_user
-
-        raise ValueError(f"User {email} already exists")
 
 
 def _hash_password(password: str) -> bytes:
