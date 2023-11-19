@@ -12,6 +12,7 @@ from typing import (
     TypeVar,
     Union
 )
+U = TypeVar(User)
 
 
 class Auth:
@@ -57,14 +58,24 @@ class Auth:
         self._db.update_user(user.id, session_id=user.session_id)
         return user.session_id
 
-    def get_user_from_session_id(self, session_id: str) -> Union[None, TypeVar(User)]:
-        """Gets user by session ID"""
-        if not session_id:
+    def get_user_from_session_id(self, session_id: str) -> Union[None, U]:
+        """
+        Takes a session_id and returns the corresponding user, if one exists,
+        else returns None
+        Args:
+            session_id (str): session id for user
+        Return:
+            user object if found, else None
+        """
+        if session_id is None:
             return None
+
         try:
-            return self._db.find_user_by(session_id=session_id)
+            user = self._db.find_user_by(session_id=session_id)
         except NoResultFound:
-            return
+            return None
+
+        return user
 
 
 def _hash_password(password: str) -> bytes:
