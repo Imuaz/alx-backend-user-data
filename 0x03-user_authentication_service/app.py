@@ -58,7 +58,7 @@ def logout():
             abort(403)
 
 
-@app.route('/profile', methods=['GET'])
+@app.route('/profile', methods=['GET'], strict_slashes=False)
 def profile():
     """finds user profile"""
     session_cookie = request.cookies.get("session_id")
@@ -66,6 +66,20 @@ def profile():
     if user:
         return jsonify({"email": user.email}), 200
     else:
+        abort(403)
+
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token():
+    """Gets the reset password token"""
+    email = request.form.get('email')
+    try:
+        psswd_token = AUTH.get_reset_password_token(email)
+        if psswd_token:
+            return jsonify({"email": email, "reset_token": token}), 200
+        else:
+            abort(403)
+    except ValueError:
         abort(403)
 
 
