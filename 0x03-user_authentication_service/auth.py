@@ -7,7 +7,6 @@ import bcrypt
 from user import User
 from db import DB
 from sqlalchemy.orm.exc import NoResultFound
-from typing import Union
 
 
 class Auth:
@@ -53,7 +52,7 @@ class Auth:
         self._db.update_user(user.id, session_id=user.session_id)
         return user.session_id
 
-    def get_user_from_session_id(self, session_id: str) -> Union[None, User] :
+    def get_user_from_session_id(self, session_id: str) -> str:
         """
         Takes a session_id and returns the corresponding user
         """
@@ -61,8 +60,7 @@ class Auth:
             return None
 
         try:
-            user = self._db.find_user_by(session_id=session_id)
-            return user
+            return self._db.find_user_by(session_id=session_id)
         except NoResultFound:
             return None
 
@@ -70,6 +68,7 @@ class Auth:
         """Updates the corresponding user's session ID to None"""
         if user_id:
             self._db.update_user(user_id, session_id=None)
+            return None
 
 
 def _hash_password(password: str) -> bytes:
