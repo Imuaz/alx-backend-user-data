@@ -69,6 +69,18 @@ class Auth:
         user = self._db.update_user(user_id, session_id=None)
         return user
 
+    def get_reset_password_token(self, email: str) -> str:
+        """Gets reset password token"""
+        if email:
+            try:
+                user = self._db.find_user_by(email=email)
+            except NoResultFound:
+                raise ValueError
+            else:
+                new_token = _generate_uuid()
+                self._db.update_user(user.id, reset_token=new_token)
+                return new_token
+
 
 def _hash_password(password: str) -> bytes:
     """Returns bytes as asalted hash of the input password, hashed"""
