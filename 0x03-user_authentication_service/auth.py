@@ -8,11 +8,6 @@ from user import User
 from db import DB
 from sqlalchemy.orm.exc import NoResultFound
 from typing import Optional
-from typing import (
-    TypeVar,
-    Union
-)
-U = TypeVar(User)
 
 
 class Auth:
@@ -58,14 +53,9 @@ class Auth:
         self._db.update_user(user.id, session_id=user.session_id)
         return user.session_id
 
-    def get_user_from_session_id(self, session_id: str) -> Union[None, U]:
+    def get_user_from_session_id(self, session_id: str) -> User:
         """
-        Takes a session_id and returns the corresponding user, if one exists,
-        else returns None
-        Args:
-            session_id (str): session id for user
-        Return:
-            user object if found, else None
+        Takes a session_id and returns the corresponding user
         """
         if session_id is None:
             return None
