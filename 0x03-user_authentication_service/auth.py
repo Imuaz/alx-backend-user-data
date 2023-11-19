@@ -67,6 +67,10 @@ class Auth:
 
         return user
 
+    def destroy_session(self, user_id: int) -> None:
+        """Updates the corresponding user's session ID to None"""
+        self._db.update_user(user_id, session_id=None)
+
 
 def _hash_password(password: str) -> bytes:
     """Returns bytes as asalted hash of the input password, hashed"""
