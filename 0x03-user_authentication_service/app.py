@@ -45,20 +45,20 @@ def login():
     return payload
 
 
-@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+@app.route("/sessions"  methods=["DELETE"], strict_slashes=False)
 def logout():
     """Logout route to destroy the session."""
-    if request.method == 'DELETE':
-        session_cookie = request.cookies.get('session_id')
+    if request.method == "DELETE":
+        session_cookie = request.cookies.get("session_id")
         user = AUTH.get_user_from_session_id(session_cookie)
         if user:
             AUTH.destroy_session(user.id)
-            return redirect('/')
+            return redirect("/")
         else:
             abort(403)
 
 
-@app.route('/profile', methods=['GET'], strict_slashes=False)
+@app.route("/profile", methods=["GET"], strict_slashes=False)
 def profile():
     """finds user profile"""
     session_cookie = request.cookies.get("session_id")
@@ -69,10 +69,10 @@ def profile():
         abort(403)
 
 
-@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+@app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token():
     """Gets the reset password token"""
-    email = request.form.get('email')
+    email = request.form.get("email")
     try:
         psswd_token = AUTH.get_reset_password_token(email)
         if psswd_token:
@@ -80,6 +80,19 @@ def get_reset_password_token():
         else:
             abort(403)
     except ValueError:
+        abort(403)
+
+
+@app.route("/reset_password", methods=["PUT"], strict_slashes=None)
+def update_password():
+    """Udates user password"""
+    email = request.form.get("email")
+    reset_token = request.form.get("reset_token")
+    new_password = request.form.get("new_password")
+    try:
+        AUTH.update_password(reset_token, new_password)
+        return jsonify({"email": email, "message": "Password updated"})
+    except Exception:
         abort(403)
 
 
